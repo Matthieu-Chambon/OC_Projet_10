@@ -1,0 +1,24 @@
+[project]
+name = "SoftDesk"
+version = "0.1.0"
+description = "Projet 10 : Créez une API sécurisée RESTful en utilisant Django REST"
+authors = [
+    {name = "Your Name",email = "you@example.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "asgiref (==3.8.1)",
+    "djangorestframework (==3.16.0)",
+    "djangorestframework-simplejwt (==5.5.0)",
+    "faker (==37.3.0)",
+    "pyjwt (==2.9.0)",
+    "sqlparse (==0.5.3)",
+    "tzdata (==2025.2)",
+    "django (>=5.2.1,<6.0.0)",
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
