@@ -8,7 +8,7 @@ from django.utils.timezone import now
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'SoftDesk.settings')
 django.setup()
 
-from api.models import User, Project, Issue, Comment
+from api.models import User, Contributor, Project, Issue, Comment
 
 fake = Faker('fr_FR')
 
@@ -16,6 +16,7 @@ def run():
     Comment.objects.all().delete()
     Issue.objects.all().delete()
     Project.objects.all().delete()
+    Contributor.objects.all().delete()
     User.objects.all().delete()
     
     User.objects.create_superuser(
@@ -54,7 +55,6 @@ def run():
             title = random.choice(project_titles),
             description=random.choice(['BACKEND', 'FRONTEND', 'IOS', 'ANDROID']),
         )
-        project.contributors.set(random.sample(users, k=random.randint(1, len(users))))
         projects.append(project)
 
     issues = []
@@ -84,5 +84,6 @@ def run():
         )
 
 if __name__ == '__main__':
+    # > python populate.py
     run()
     print("Données de test insérées !")
