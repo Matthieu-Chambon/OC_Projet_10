@@ -1,10 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import MinValueValidator
 import uuid
 
 
 class User(AbstractUser):
-    age = models.PositiveIntegerField()
+    age = models.PositiveIntegerField(
+        validators=[MinValueValidator(15)],
+    )
     can_be_contacted = models.BooleanField(default=False)
     can_data_be_shared = models.BooleanField(default=False)
     
@@ -16,7 +19,6 @@ class User(AbstractUser):
 
 class Project(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='projects')
-    contributors = models.ManyToManyField(User, related_name='contributed_projects')
     title = models.CharField(max_length=255)
         
     BACKEND = 'BACKEND'
@@ -36,6 +38,13 @@ class Project(models.Model):
     
     def __str__(self):
         return self.title
+    
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        Contributor.objects.get_or_create(
+            user=self.author,
+            project=self
+        )
 
 
 class Issue(models.Model):
@@ -93,3 +102,8 @@ class Comment(models.Model):
     
     def __str__(self):
         return f"Comment by {self.author.username} on {self.issue.title}"
+    
+    
+class Contributor(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='contributed_projects')
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='contributors')

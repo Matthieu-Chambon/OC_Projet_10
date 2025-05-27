@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User, Project, Issue, Comment
+from .models import User, Contributor, Project, Issue, Comment
 from .forms import CustomUserCreationForm
 
 
@@ -21,6 +21,16 @@ class CustomUserAdmin(UserAdmin):
         (None, {
             'classes': ('wide',),
             'fields': ('username', 'age', 'can_be_contacted', 'can_data_be_shared', 'password1', 'password2'),
+        }),
+    )
+    
+@admin.register(Contributor)
+class ContributorAdmin(admin.ModelAdmin):
+    list_display = ('user', 'project')
+    ordering = ('user',)
+    fieldsets = (
+        (None, {
+            'fields': ('user', 'project')
         }),
     )
     
