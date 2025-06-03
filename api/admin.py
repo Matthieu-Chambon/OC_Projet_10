@@ -10,7 +10,7 @@ class CustomUserAdmin(UserAdmin):
     model = User
     list_display = ('username', 'age', 'can_be_contacted', 'can_data_be_shared')
     ordering = ('username',)
-    
+
     fieldsets = UserAdmin.fieldsets + (
         ('Informations supplémentaires', {
             'fields': ('age', 'can_be_contacted', 'can_data_be_shared'),
@@ -23,7 +23,8 @@ class CustomUserAdmin(UserAdmin):
             'fields': ('username', 'age', 'can_be_contacted', 'can_data_be_shared', 'password1', 'password2'),
         }),
     )
-    
+
+
 @admin.register(Contributor)
 class ContributorAdmin(admin.ModelAdmin):
     list_display = ('user', 'project')
@@ -33,7 +34,7 @@ class ContributorAdmin(admin.ModelAdmin):
             'fields': ('user', 'project')
         }),
     )
-    
+
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
@@ -44,7 +45,7 @@ class ProjectAdmin(admin.ModelAdmin):
             'fields': ('author', 'contributors', 'title', 'description')
         }),
     )
-    
+
 
 @admin.register(Issue)
 class IssueAdmin(admin.ModelAdmin):
@@ -55,7 +56,7 @@ class IssueAdmin(admin.ModelAdmin):
             'fields': ('author', 'project', 'title', 'description', 'priority', 'type', 'status')
         }),
     )
-    
+
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
