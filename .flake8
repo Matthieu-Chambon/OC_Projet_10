@@ -1,0 +1,15 @@
+[flake8]
+max-line-length = 110
+
+# Répertoires ou fichiers à exclure
+exclude =
+    env,
+    migrations,
+    __pycache__,
+    static,
+    media,
+    node_modules
+
+# Format du rapport
+format = html
+htmldir = flake-report
