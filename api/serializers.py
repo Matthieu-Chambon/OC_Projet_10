@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
+from rest_framework.reverse import reverse
 
 from .models import User, Project, Issue, Comment
 
@@ -87,7 +88,17 @@ class IssueDetailSerializer(ModelSerializer):
 
 
 class CommentSerializer(ModelSerializer):
+    issue_url = serializers.SerializerMethodField()
+
     class Meta:
         model = Comment
-        fields = ['uuid', 'author', 'issue', 'description', 'created_time']
+        fields = ['uuid', 'author', 'issue', 'description', 'issue_url', 'created_time']
         read_only_fields = ['uuid', 'author', 'issue']
+
+    def get_issue_url(self, instance):
+        return reverse(
+            'project-issues-detail',
+            kwargs={
+                'project_pk': instance.issue.project.id,
+                'pk': instance.issue.id},
+        )
