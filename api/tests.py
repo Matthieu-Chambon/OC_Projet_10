@@ -1,4 +1,5 @@
 from rest_framework.test import APITestCase
+from rest_framework.reverse import reverse
 from api.models import User, Project, Issue, Comment
 
 
@@ -142,6 +143,12 @@ class ApiTest(APITestCase):
                 'description': comment.description,
                 'uuid': str(comment.uuid),
                 'created_time': self.format_datetime(comment.created_time),
+                'issue_url': reverse(
+                    'project-issues-detail',
+                    kwargs={
+                        'project_pk': comment.issue.project.id,
+                        'pk': comment.issue.id},
+                )
             } for comment in comments
         ]
 
@@ -152,6 +159,13 @@ class ApiTest(APITestCase):
             'description': comment.description,
             'uuid': str(comment.uuid),
             'created_time': self.format_datetime(comment.created_time),
+            'issue_url': reverse(
+                'project-issues-detail',
+                kwargs={
+                    'project_pk': comment.issue.project.id,
+                    'pk': comment.issue.id
+                },
+            ),
         }
 
 
