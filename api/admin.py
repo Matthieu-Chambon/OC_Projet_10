@@ -42,7 +42,7 @@ class ProjectAdmin(admin.ModelAdmin):
     ordering = ('created_time',)
     fieldsets = (
         (None, {
-            'fields': ('author', 'contributors', 'title', 'description')
+            'fields': ('author', 'title', 'description')
         }),
     )
 
