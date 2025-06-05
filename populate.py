@@ -46,7 +46,8 @@ def run():
         project = Project.objects.create(
             author=author,
             title=project_titles[i],
-            description=random.choice(['BACKEND', 'FRONTEND', 'IOS', 'ANDROID']),
+            description=fake.paragraph(nb_sentences=3),
+            type=random.choice(['BACKEND', 'FRONTEND', 'IOS', 'ANDROID']),
         )
         projects.append(project)
 
