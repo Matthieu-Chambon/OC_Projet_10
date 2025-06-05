@@ -34,7 +34,7 @@ class UserCreateSerializer(ModelSerializer):
 class ProjectSerializer(ModelSerializer):
     class Meta:
         model = Project
-        fields = ['id', 'author', 'title', 'description', 'created_time']
+        fields = ['id', 'author', 'title', 'description', 'type', 'created_time']
         read_only_fields = ['id', 'author']
 
 
@@ -44,7 +44,7 @@ class ProjectDetailSerializer(ModelSerializer):
 
     class Meta:
         model = Project
-        fields = ['id', 'author', 'contributors', 'title', 'description', 'created_time', 'issues']
+        fields = ['id', 'author', 'contributors', 'title', 'description', 'type', 'created_time', 'issues']
 
     def get_issues(self, instance):
         queryset = instance.issues.all()

@@ -34,7 +34,8 @@ class ApiTest(APITestCase):
         cls.project_1 = Project.objects.create(
             author=cls.user_1,
             title='Project 1',
-            description='BACKEND',
+            description='Description of project 1',
+            type=Project.BACKEND,
         )
         cls.contributor_1 = cls.project_1.add_contributor(cls.user_2)
         cls.issue_1 = Issue.objects.create(
@@ -91,6 +92,7 @@ class ApiTest(APITestCase):
                 'title': project.title,
                 'author': project.author.id,
                 'description': project.description,
+                'type': project.type,
                 'created_time': self.format_datetime(project.created_time),
             } for project in projects
         ]
@@ -101,6 +103,7 @@ class ApiTest(APITestCase):
             'title': project.title,
             'author': project.author.id,
             'description': project.description,
+            'type': project.type,
             'created_time': self.format_datetime(project.created_time),
             'contributors': self.get_user_summary_data(User.objects.filter(contributions__project=project)),
             'issues': self.get_issue_list_data(project.issues.all()),
@@ -344,7 +347,8 @@ class ProjectTests(ApiTest):
     def test_create_unauth(self):
         response = self.client.post(self.url, data={
             'title': 'New Project',
-            'description': 'BACKEND',
+            'description': 'Description of new project',
+            'type': 'BACKEND',
         })
         self.assertEqual(response.status_code, 401)
 
@@ -353,7 +357,8 @@ class ProjectTests(ApiTest):
         project_count = Project.objects.count()
         response = self.client.post(self.url, data={
             'title': 'New Project',
-            'description': 'BACKEND',
+            'description': 'Description of new project',
+            'type': 'BACKEND',
         })
         self.assertEqual(response.status_code, 201)
         self.assertEqual(Project.objects.count(), project_count + 1)
@@ -384,7 +389,8 @@ class ProjectTests(ApiTest):
     def test_update_unauth(self):
         response = self.client.put(self.url_detail, data={
             'title': 'Updated Project',
-            'description': 'FRONTEND',
+            'description': 'Updated description',
+            'type': 'FRONTEND',
         })
         self.assertEqual(response.status_code, 401)
 
@@ -392,18 +398,21 @@ class ProjectTests(ApiTest):
         self.log_user_in(self.user_1)
         response = self.client.put(self.url_detail, data={
             'title': 'Updated Project',
-            'description': 'FRONTEND',
+            'description': 'Updated description',
+            'type': 'FRONTEND',
         })
         self.assertEqual(response.status_code, 200)
         self.project_1.refresh_from_db()
         self.assertEqual(self.project_1.title, 'Updated Project')
-        self.assertEqual(self.project_1.description, 'FRONTEND')
+        self.assertEqual(self.project_1.description, 'Updated description')
+        self.assertEqual(self.project_1.type, 'FRONTEND')
 
     def test_update_auth_contributor(self):
         self.log_user_in(self.user_2)
         response = self.client.put(self.url_detail, data={
             'title': 'Updated Project',
-            'description': 'FRONTEND',
+            'description': 'Updated description',
+            'type': 'FRONTEND',
         })
         self.assertEqual(response.status_code, 403)
 
@@ -411,7 +420,8 @@ class ProjectTests(ApiTest):
         self.log_user_in(self.user_3)
         response = self.client.put(self.url_detail, data={
             'title': 'Updated Project',
-            'description': 'FRONTEND',
+            'description': 'Updated description',
+            'type': 'FRONTEND',
         })
         self.assertEqual(response.status_code, 403)
 

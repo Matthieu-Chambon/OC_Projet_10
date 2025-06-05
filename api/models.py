@@ -20,20 +20,21 @@ class User(AbstractUser):
 class Project(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='projects')
     title = models.CharField(max_length=255)
+    description = models.TextField(max_length=2048, blank=True)
 
     BACKEND = 'BACKEND'
     FRONTEND = 'FRONTEND'
     IOS = 'IOS'
     ANDROID = 'ANDROID'
 
-    description_choices = (
+    type_choices = (
         (BACKEND, 'Backend'),
         (FRONTEND, 'Frontend'),
         (IOS, 'iOS'),
         (ANDROID, 'Android'),
     )
 
-    description = models.CharField(max_length=30, choices=description_choices)
+    type = models.CharField(max_length=30, choices=type_choices)
     created_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
