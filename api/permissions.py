@@ -56,8 +56,8 @@ class ProjectPermission(BasePermission):
 
 class IssueAndCommentPermission(BasePermission):
     """
-    L'auteur et les contributeurs d'un projet peuvent créer ou lister des issues
-    L'auteur d'une issue peut la modifier ou la supprimer
+    L'auteur et les contributeurs d'un projet peuvent créer ou lister des issues/comments
+    L'auteur d'une issue/comment peut la modifier ou la supprimer
     Les autres utilisateurs peuvent uniquement consulter les options
     """
     def has_permission(self, request, view):
@@ -72,7 +72,7 @@ class IssueAndCommentPermission(BasePermission):
         if request.method == 'OPTIONS':
             return True
 
-        # Autorise les contributeurs et l'auteur du projet à créer ou lister des issues
+        # Autorise les contributeurs et l'auteur du projet à créer ou lister les issues/comments
         if request.method in ('GET', 'HEAD', 'POST'):
             return (
                 project.contributors.filter(user=request.user).exists()
@@ -89,14 +89,14 @@ class IssueAndCommentPermission(BasePermission):
 
         project = get_object_or_404(Project, pk=project_pk)
 
-        # Authorise l'auteur ou les contributeurs du projet à lire le détail d'une issue
+        # Authorise l'auteur ou les contributeurs du projet à lire le détail de l'issue/comment
         if request.method in ('GET', 'HEAD'):
             return (
                 project.contributors.filter(user=request.user).exists() or
                 project.author == request.user
             )
 
-        # Autorise l'auteur de l'issue à la modifier ou la supprimer
+        # Autorise l'auteur à modifier ou supprimer
         if request.method in ('PUT', 'PATCH', 'DELETE'):
             return obj.author == request.user
 
