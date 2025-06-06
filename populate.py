@@ -83,7 +83,7 @@ def run():
                 type=random.choice(['BUG', 'FEATURE', 'TASK']),
                 status=random.choice(['TODO', 'IN_PROGRESS', 'FINISHED']),
             )
-        issues.append(issue)
+            issues.append(issue)
 
     for issue in issues:
         for _ in range(random.randint(3, 10)):
