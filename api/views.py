@@ -86,6 +86,10 @@ class CommentViewSet(MultipleSerializerMixin, ModelViewSet):
     serializer_class = CommentSerializer
     permission_classes = [IsAuthenticated, IssueAndCommentPermission]
 
+    def get_queryset(self):
+        issue_pk = self.kwargs.get('issue_pk')
+        return self.queryset.filter(issue__id=issue_pk)
+
     def perform_create(self, serializer):
         issue = get_object_or_404(Issue, id=self.kwargs.get('issue_pk'))
         author = self.request.user
